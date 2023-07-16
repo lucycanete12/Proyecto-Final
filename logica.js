@@ -97,7 +97,7 @@ function renderizarProductos(listaProds){
     }
 }
 
-function agregarACarrito(producto) {
+function agregarACarrito(producto){
     carro.push(producto);
     console.table(carro);
     Swal.fire({
@@ -109,44 +109,20 @@ function agregarACarrito(producto) {
         imageAlt: producto.nombre,
     });
     tablaBody.innerHTML += `
-      <tr id="producto-${producto.id}">
+        <tr>
         <td>${producto.id}</td>
         <td>${producto.nombre}</td>
         <td>${producto.precio}</td>
-        <td>
-        <button class="btn btn-light" onclick="decrementar(${producto.id})">-</button>
-        <span id="cantidad-${producto.id}">1</span>
-        <button class="btn btn-light" onclick="incrementar(${producto.id})">+</button>
-        </td>
-        <td><button class="btn btn-light" onclick="eliminar(${producto.id})">🗑️</button></td>
-      </tr>
+        <td><button class="btn btn-light" onclick="eliminar(event)">🗑️</button></td>
+        </tr>
     `;
-    // Aquí calculamos el total
+    //aqui calcular total
     let total = carro.reduce((ac,prod)=> ac + prod.precio,0);
     console.log(total);
     document.getElementById('total').innerText = `Total a pagar $:${total}`;
-    //Trabajamos con el almacenamiento local (localStorage)
-    localStorage.setItem('carro', JSON.stringify(carro));
+    //trabajar con el storage
+    localStorage.setItem('carro',JSON.stringify(carro));
 }
-
-function incrementar(id) {
-    const cantidadElement = document.getElementById(`cantidad-${id}`);
-    let cantidad = parseInt(cantidadElement.innerText);
-    cantidad++;
-    cantidadElement.innerText = cantidad.toString();
-    actualizarTotal(id, cantidad);
-}
-
-function decrementar(id) {
-    const cantidadElement = document.getElementById(`cantidad-${id}`);
-    let cantidad = parseInt(cantidadElement.innerText);
-    if (cantidad > 1) {
-      cantidad--;
-      cantidadElement.innerText = cantidad.toString();
-    };
-    actualizarTotal(id, cantidad);
-}
-
 
 //trabajamos con los filtros
 let filtro = document.getElementById('filtro');
